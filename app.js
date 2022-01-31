@@ -4,6 +4,7 @@ const methodOverride = require('method-override');
 const engine = require('ejs-mate');
 const path = require('path');
 const Campground = require('./models/campground');
+const Review = require('./models/reviews');
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/expressError');
 const validateCampground = require('./utils/validateCampground');
@@ -83,6 +84,18 @@ app.get(
 	catchAsync(async (req, res) => {
 		const campground = await Campground.findById(req.params.id);
 		res.render('campground/edit', { campground });
+	})
+);
+
+app.post(
+	'/campgrounds/:id/review',
+	catchAsync(async (req, res) => {
+		const campground = await Campground.findById(req.params.id);
+		const review = new Review(req.body.review);
+		campground.reviews.push(review);
+		await review.save();
+		await campground.save();
+		res.redirect(`/campgrounds/${campground._id}`);
 	})
 );
 
