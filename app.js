@@ -8,6 +8,7 @@ const Review = require('./models/reviews');
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/expressError');
 const validateCampground = require('./utils/validateCampground');
+const validateReview = require('./utils/validateReviews');
 
 const app = express();
 
@@ -89,10 +90,10 @@ app.get(
 
 app.post(
 	'/campgrounds/:id/review',
+	validateReview,
 	catchAsync(async (req, res) => {
 		const campground = await Campground.findById(req.params.id);
 		const review = new Review(req.body.review);
-		campground.reviews.push(review);
 		await review.save();
 		await campground.save();
 		res.redirect(`/campgrounds/${campground._id}`);
