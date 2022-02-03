@@ -1,6 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const session = require('express-session');
 const methodOverride = require('method-override');
+const flash = require('connect-flash');
 const engine = require('ejs-mate');
 const path = require('path');
 const campgrounds = require('./routes/campground');
@@ -21,6 +23,26 @@ app.use(express.urlencoded({ extended: true }));
 app.engine('ejs', engine);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '/views'));
+
+const sessionConfig = {
+	secret: 'thisShouldBeABetterSecret',
+	resave: false,
+	saveUninitialized: true,
+	cookie: {
+		httpOnly: true,
+		expires: Date.now() + 1000 * 60 * 60 * 24 * 7, //expires after a week 1000ms*60sec*60min*24h4*7days
+		maxAge: 1000 * 60 * 60 * 24 * 7, //the cookie only lasts for a week
+	},
+};
+
+app.use(session(sessionConfig));
+app.use(flash());
+
+app.use((req, res, next) => {
+	res.locals.success = req.flash('success');
+	res.locals.error = req.flash('error');
+	next();
+});
 
 app.use('/campgrounds', campgrounds);
 app.use('/campgrounds/:id/review', reviews);
