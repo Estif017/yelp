@@ -3,6 +3,7 @@ const router = express.Router();
 const Campground = require('../models/campground');
 const catchAsync = require('../utils/catchAsync');
 const validateCampground = require('../utils/validateCampground');
+const { isLoggedIn } = require('../middleware');
 
 router.get(
 	'/',
@@ -12,12 +13,13 @@ router.get(
 	})
 );
 
-router.get('/new', (req, res) => {
+router.get('/new', isLoggedIn, (req, res) => {
 	res.render('campground/new');
 });
 
 router.post(
 	'/',
+	isLoggedIn,
 	validateCampground,
 	catchAsync(async (req, res) => {
 		const campground = new Campground(req.body.campground);
@@ -43,6 +45,7 @@ router.get(
 
 router.put(
 	'/:id',
+	isLoggedIn,
 	validateCampground,
 	catchAsync(async (req, res) => {
 		const campground = await Campground.findByIdAndUpdate(
@@ -58,6 +61,7 @@ router.put(
 
 router.get(
 	'/:id/edit',
+	isLoggedIn,
 	catchAsync(async (req, res) => {
 		const campground = await Campground.findById(req.params.id);
 		if (!campground) {
@@ -70,6 +74,7 @@ router.get(
 
 router.delete(
 	'/:id/delete',
+	isLoggedIn,
 	catchAsync(async (req, res) => {
 		await Campground.findByIdAndDelete(req.params.id);
 		req.flash('success', 'Successfully deleted campground!');
