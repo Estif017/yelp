@@ -3,16 +3,10 @@ module.exports.campgroundSchemas = Joi.object({
 	campground: Joi.object({
 		title: Joi.string().required(),
 		price: Joi.number().required().min(0),
-		// images: Joi.array().items(
-		// 	Joi.object({
-		// 		url: Joi.string(),
-		// 		filename: Joi.string().required(),
-		// 	}).required()
-		// ),
-		// images: Joi.array().required(),
 		location: Joi.string().required(),
 		description: Joi.string().required(),
 	}).required(),
+	deleteImages: Joi.array(),
 });
 
 module.exports.reviewSchemas = Joi.object({
