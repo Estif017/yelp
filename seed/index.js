@@ -18,6 +18,10 @@ const seedDB = async () => {
 		const camp = new Campground({
 			location: `${cities[random1000].city}, ${cities[random1000].state}`,
 			title: `${sample(descriptors)}, ${sample(places)}`,
+			geometry: {
+				type: 'Point',
+				coordinates: [-90.73333, 14.5667],
+			},
 			images: [
 				{
 					url: 'https://res.cloudinary.com/es-yelp/image/upload/v1646154854/yelpCamp/iqhz3fxzerndt4ux0evw.jpg',
