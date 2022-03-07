@@ -1,15 +1,19 @@
 <% layout('layouts/boilerplate')%>
 <link rel="stylesheet" href="/stylesheet/starblity.css" />
-
 <div class="row">
 	<div class="col-6">
+		<div id="map" style="width:400px; height: 300px"></div>
 		<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
 			<div class="carousel-inner">
-				<% campground.images.forEach((img,i) => { %> 
-					<div class="carousel-item <%= i===0?"active":"" %> ">
-						<img class="d-block w-100" src="<%=img.url%> " alt="slide <%= i+1 %> ">
-					</div>
-					<%})%> 
+				<% if(campground.images.length){ %> 
+					<% campground.images.forEach((img,i) => { %> 
+						<div class="carousel-item <%= i===0?"active":"" %> ">
+							<img class="d-block w-100" src="<%=img.url%> " alt="slide <%= i+1 %> ">
+						</div>
+						<%})%> 
+					<% }else{ %>
+							<img src="https://res.cloudinary.com/es-yelp/image/upload/v1646154854/yelpCamp/iqhz3fxzerndt4ux0evw.jpg" alt="default imge">
+				<% } %>  
 			</div>
 			<% if(campground.images.length>1){%>
 				<a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
@@ -120,3 +124,8 @@
 		<% } %>
 	</div>
 </div>
+<script>
+	const mapToken='<%-process.env.MAPBOX_TOKEN%>'
+	const campground=<%-JSON.stringify(campground)%>
+</script>
+<script src="/javascript/showPageMap.js"></script>
