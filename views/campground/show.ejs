@@ -2,7 +2,6 @@
 <link rel="stylesheet" href="/stylesheet/starblity.css" />
 <div class="row">
 	<div class="col-6">
-		<div id="map" style="width:400px; height: 300px"></div>
 		<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
 			<div class="carousel-inner">
 				<% if(campground.images.length){ %> 
@@ -58,6 +57,8 @@
 		</div>
 	</div>
 	<div class="col-6">
+		<div id="map" style="width:400px; height: 300px"></div>
+
 		<% if(currentUser){ %>
 		<h2>Leave a Review</h2>
 		<form
